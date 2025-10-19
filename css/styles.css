@@ -105,6 +105,9 @@ body {
   min-height: 0;
   overflow-y: auto;
   padding-bottom: 2rem;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
 }
 
 .page-number {
@@ -247,6 +250,9 @@ body {
   pointer-events: auto;
   flex: 1;
   min-height: 0; /* Critical for flexbox scrolling */
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
 }
 
 .project-card {
@@ -340,6 +346,13 @@ body {
   padding: 2rem;
   text-align: center;
   margin-top: 2rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+  padding-bottom: 2rem;
 }
 
 .contact-links {
@@ -504,6 +517,9 @@ body {
     overflow-y: auto;
     padding-right: 0.5rem;
     padding-bottom: 2rem;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
   }
 
   .navigation {
@@ -532,27 +548,35 @@ body {
 /* Scroll Styling for All Pages */
 .projects-container::-webkit-scrollbar,
 .skills-grid::-webkit-scrollbar,
-.content::-webkit-scrollbar {
+.content::-webkit-scrollbar,
+.contact-card::-webkit-scrollbar {
+  /* <-- ADD THIS */
   width: 6px;
 }
 
 .projects-container::-webkit-scrollbar-track,
 .skills-grid::-webkit-scrollbar-track,
-.content::-webkit-scrollbar-track {
+.content::-webkit-scrollbar-track,
+.contact-card::-webkit-scrollbar-track {
+  /* <-- ADD THIS */
   background: rgba(230, 192, 123, 0.1);
   border-radius: 3px;
 }
 
 .projects-container::-webkit-scrollbar-thumb,
 .skills-grid::-webkit-scrollbar-thumb,
-.content::-webkit-scrollbar-thumb {
+.content::-webkit-scrollbar-thumb,
+.contact-card::-webkit-scrollbar-thumb {
+  /* <-- ADD THIS */
   background: var(--royal-bronze);
   border-radius: 3px;
 }
 
 .projects-container::-webkit-scrollbar-thumb:hover,
 .skills-grid::-webkit-scrollbar-thumb:hover,
-.content::-webkit-scrollbar-thumb:hover {
+.content::-webkit-scrollbar-thumb:hover,
+.contact-card::-webkit-scrollbar-thumb:hover {
+  /* <-- ADD THIS */
   background: var(--royal-gold);
 }
 

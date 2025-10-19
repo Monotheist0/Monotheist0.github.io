@@ -5,8 +5,6 @@ let isAnimating = false;
 let projectsLoaded = false;
 let soundEnabled = false;
 let audioContext = null;
-let touchStartY = 0;
-let touchEndY = 0;
 
 // Backup projects data
 const backupProjects = [
@@ -45,20 +43,6 @@ function initBook() {
   loadProjects();
   // Add keyboard navigation
   document.addEventListener("keydown", handleKeyPress);
-  const scrollableAreas = document.querySelectorAll(".projects-container, .skills-grid, .content");
-
-  const handleWheelScroll = function (e) {
-    // Check if the container is actually scrollable
-    const hasScrollbar = this.scrollHeight > this.clientHeight;
-    if (hasScrollbar) {
-      // Stop the scroll event from bubbling up to the body
-      e.stopPropagation();
-    }
-  };
-
-  scrollableAreas.forEach((area) => {
-    area.addEventListener("wheel", handleWheelScroll);
-  });
 }
 
 function playFlipSound() {
@@ -118,44 +102,6 @@ function toggleSound() {
       audioContext.resume();
     }
   }
-}
-// Add touch support for mobile
-let touchStartX = 0;
-let touchEndX = 0;
-
-document.addEventListener(
-  "touchstart",
-  function (e) {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-  },
-  { passive: true },
-);
-
-document.addEventListener(
-  "touchend",
-  function (e) {
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipe();
-  },
-  { passive: true },
-);
-
-function handleSwipe() {
-  const deltaX = Math.abs(touchEndX - touchStartX);
-  const deltaY = Math.abs(touchEndY - touchStartY);
-  const minSwipeDistance = 50; // Minimum pixels for a "swipe"
-
-  if (deltaX > deltaY && deltaX > minSwipeDistance) {
-    if (touchEndX < touchStartX) {
-      nextPage(); // Swiped left
-    } else {
-      prevPage(); // Swiped right
-    }
-  }
-  // If deltaY > deltaX, the user was scrolling vertically,
-  // so we do nothing.
 }
 
 // Handle keyboard navigation
@@ -329,7 +275,7 @@ function updateNavigation() {
 // Load projects from GitHub API
 async function loadProjects() {
   if (projectsLoaded) return;
-  // ... (rest of your loadProjects function is perfectly fine)
+
   const container = document.getElementById("projectsContainer");
 
   try {
