@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="The Chronicles of Masud - A journey through code and purpose. Portfolio of MD Masud Ur Rahman, CSE student and developer."
+    />
+    <meta
+      name="keywords"
+      content="Masud Rahman, Portfolio, Developer, CSE, Programming, Islamic Tech, AI"
+    />
+    <meta name="author" content="MD Masud Ur Rahman" />
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="The Chronicles of Masud" />
+    <meta
+      property="og:description"
+      content="A journey through code and purpose - Portfolio of MD Masud Ur Rahman"
+    />
+    <meta property="og:type" content="website" />
+
+    <title>The Chronicles of Masud - Portfolio</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Linking -->
+    <link rel="stylesheet" href="./css/styles.css" />
+
+    <!-- Google Fonts for Serif Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Book Container -->
+    <div class="book-container">
+      <div class="book" id="book">
+        <!-- Page 1: Cover -->
+        <section class="page cover-page current" data-page="1">
+          <div class="page-content">
+            <div>
+              <h1 class="main-title">The Chronicles of Masud</h1>
+              <p class="subtitle">A Journey Through Code and Purpose</p>
+              <div class="ornament">◆ ❖ ◆</div>
+              <p class="author-name">MD Masud Ur Rahman</p>
+            </div>
+            <div class="open-hint">Click to open →</div>
+          </div>
+          <!-- Click areas for navigation -->
+          <div class="click-area right" onclick="nextPage()"></div>
+        </section>
+
+        <!-- Page 2: About Me -->
+        <section class="page" data-page="2">
+          <div class="page-content">
+            <div class="chapter-number">Chapter I</div>
+            <h2 class="chapter-title">About Me</h2>
+            <div class="ornament">❖</div>
+
+            <div class="content" style="flex-grow: 1; overflow-y: auto">
+              <p style="margin-bottom: 1.5rem; font-size: 1.1rem; line-height: 1.7">
+                Peace be upon you, I'm MD Masud Ur Rahman.
+              </p>
+
+              <p style="margin-bottom: 1.5rem; line-height: 1.7">
+                Learning technology to build something beneficial for humanity, something I can
+                answer for before my Creator.
+              </p>
+
+              <p style="margin-bottom: 1.5rem; line-height: 1.7">
+                Currently a 5th-semester CSE student at UITS, focusing on problem-solving, DSA
+                fundamentals, AI fine-tuning, and prompt engineering. I believe in building with
+                purpose, learning in public, and using modern tools (including AI assistance) to
+                ship faster and learn deeper.
+              </p>
+
+              <p style="line-height: 1.7">
+                I've been exploring technology for the past few years, driven by curiosity and the
+                desire to build meaningful things that serve a higher purpose.
+              </p>
+            </div>
+
+            <div class="page-number">2</div>
+          </div>
+          <!-- Click areas -->
+          <div class="click-area left" onclick="prevPage()"></div>
+          <div class="click-area right" onclick="nextPage()"></div>
+        </section>
+
+        <!-- Page 3: Skills -->
+        <section class="page" data-page="3">
+          <div class="page-content">
+            <div class="chapter-number">Chapter II</div>
+            <h2 class="chapter-title">Skills</h2>
+            <div class="ornament">❖</div>
+
+            <div class="skills-grid">
+              <div class="skill-category">
+                <h4>Languages</h4>
+                <ul>
+                  <li>C</li>
+                  <li>C++</li>
+                  <li>Python</li>
+                </ul>
+              </div>
+
+              <div class="skill-category">
+                <h4>Currently Learning</h4>
+                <ul>
+                  <li>Problem-solving &amp; DSA</li>
+                  <li>AI fine-tuning &amp; prompt engineering</li>
+                  <li>Bash scripting &amp; Linux automation</li>
+                  <li>AI/ML engineering (Kaggle)</li>
+                </ul>
+              </div>
+
+              <div class="skill-category">
+                <h4>Tools &amp; Environment</h4>
+                <ul>
+                  <li>Linux (Fedora KDE)</li>
+                  <li>Git/GitHub</li>
+                  <li>VS Code</li>
+                  <li>Bash scripting</li>
+                </ul>
+              </div>
+
+              <div class="skill-category">
+                <h4>Approach</h4>
+                <ul>
+                  <li>AI-assisted development</li>
+                  <li>Learning in public</li>
+                  <li>Rapid prototyping</li>
+                  <li>Concept-first learning</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="page-number">3</div>
+          </div>
+          <!-- Click areas -->
+          <div class="click-area left" onclick="prevPage()"></div>
+          <div class="click-area right" onclick="nextPage()"></div>
+        </section>
+
+        <!-- Page 4: Projects -->
+        <section class="page" data-page="4">
+          <div class="page-content">
+            <div class="chapter-number">Chapter III</div>
+            <h2 class="chapter-title">Projects</h2>
+            <div class="ornament">❖</div>
+
+            <!-- This container now properly scrolls -->
+            <div class="projects-container" id="projectsContainer">
+              <div style="text-align: center">
+                <div class="loading-spinner"></div>
+                <p style="color: var(--royal-inactive); margin-top: 1rem">
+                  Loading projects from GitHub...
+                </p>
+              </div>
+            </div>
+
+            <div class="page-number">4</div>
+          </div>
+          <!-- Click areas -->
+          <div class="click-area left" onclick="prevPage()"></div>
+          <div class="click-area right" onclick="nextPage()"></div>
+        </section>
+
+        <!-- Page 5: Experience -->
+        <section class="page" data-page="5">
+          <div class="page-content">
+            <div class="chapter-number">Chapter IV</div>
+            <h2 class="chapter-title">Experience</h2>
+            <div class="ornament">❖</div>
+
+            <div class="content" style="flex-grow: 1; overflow-y: auto">
+              <div style="margin-bottom: 2rem">
+                <h4
+                  style="
+                    color: var(--royal-gold);
+                    font-size: 1.2rem;
+                    margin-bottom: 1rem;
+                    font-weight: 600;
+                  "
+                >
+                  Currently:
+                </h4>
+                <p style="margin-bottom: 1.5rem; line-height: 1.7">
+                  5th Semester CSE Student, UITS
+                </p>
+              </div>
+
+              <div style="margin-bottom: 2rem">
+                <h4
+                  style="
+                    color: var(--royal-gold);
+                    font-size: 1.2rem;
+                    margin-bottom: 1rem;
+                    font-weight: 600;
+                  "
+                >
+                  Focus Areas:
+                </h4>
+                <ul style="list-style: none; padding-left: 1rem">
+                  <li style="margin-bottom: 0.5rem; position: relative; padding-left: 1rem">
+                    Problem-solving and algorithmic thinking
+                  </li>
+                  <li style="margin-bottom: 0.5rem; position: relative; padding-left: 1rem">
+                    AI/ML exploration and fine-tuning
+                  </li>
+                  <li style="margin-bottom: 0.5rem; position: relative; padding-left: 1rem">
+                    System design and software architecture
+                  </li>
+                </ul>
+              </div>
+
+              <div style="margin-bottom: 2rem">
+                <h4
+                  style="
+                    color: var(--royal-gold);
+                    font-size: 1.2rem;
+                    margin-bottom: 1rem;
+                    font-weight: 600;
+                  "
+                >
+                  Philosophy:
+                </h4>
+                <blockquote
+                  style="
+                    border-left: 3px solid var(--royal-bronze);
+                    padding-left: 1rem;
+                    font-style: italic;
+                    color: var(--royal-sepia);
+                    margin-bottom: 1rem;
+                  "
+                >
+                  "Problem-solving is an ongoing process in anyone's life."
+                </blockquote>
+                <p style="line-height: 1.7">
+                  I use AI assistance as a force multiplier in my work—not as a crutch, but as a
+                  tool to build faster, learn deeper, and ship projects that actually help people.
+                </p>
+              </div>
+            </div>
+
+            <div class="page-number">5</div>
+          </div>
+          <!-- Click areas -->
+          <div class="click-area left" onclick="prevPage()"></div>
+          <div class="click-area right" onclick="nextPage()"></div>
+        </section>
+
+        <!-- Page 6: Contact -->
+        <section class="page" data-page="6">
+          <div class="page-content">
+            <div class="chapter-number">Chapter V</div>
+            <h2 class="chapter-title">Contact</h2>
+            <div class="ornament">❖</div>
+
+            <div class="contact-card">
+              <h3
+                style="
+                  color: var(--royal-gold);
+                  font-size: 1.5rem;
+                  margin-bottom: 1rem;
+                  font-family: 'Playfair Display', serif;
+                "
+              >
+                Let's Build Something Meaningful Together
+              </h3>
+
+              <p style="color: var(--royal-sepia); margin-bottom: 2rem; line-height: 1.6">
+                Whether you want to discuss technology, collaborate on a project, or simply connect,
+                I'm always open to meaningful conversations.
+              </p>
+
+              <div class="contact-links">
+                <a href="mailto:masudrahman998@gmail.com" class="contact-link" target="_blank">
+                  <span>📧</span>
+                  <span>Email Me</span>
+                </a>
+                <a href="https://github.com/Monotheist0" class="contact-link" target="_blank">
+                  <span>🐙</span>
+                  <span>GitHub</span>
+                </a>
+              </div>
+
+              <p
+                style="
+                  color: var(--royal-inactive);
+                  margin-top: 2rem;
+                  font-style: italic;
+                  font-size: 0.9rem;
+                "
+              >
+                "And it is He who created the heavens and earth in truth. And the day He says, 'Be,'
+                and it is, His word is the truth." - Quran 6:73
+              </p>
+            </div>
+
+            <div class="page-number">6</div>
+          </div>
+          <!-- Click areas -->
+          <div class="click-area left" onclick="prevPage()"></div>
+          <div class="click-area right" onclick="nextPage()"></div>
+        </section>
+
+        <!-- Page 7: Back Cover -->
+        <section class="page back-cover" data-page="7">
+          <div class="page-content">
+            <div>
+              <h2 class="thank-you">Thank you for reading my story</h2>
+              <div class="ornament">◆ ❖ ◆</div>
+              <p class="built-with">Built with purpose • 2025</p>
+              <p
+                style="
+                  color: var(--royal-sepia);
+                  font-size: 1.1rem;
+                  line-height: 1.6;
+                  margin: 2rem 0;
+                "
+              >
+                May our code serve humanity and our learning never cease.
+              </p>
+              <p class="copyright">© 2025 MD Masud Ur Rahman</p>
+            </div>
+          </div>
+          <!-- Click areas -->
+          <div class="click-area left" onclick="prevPage()"></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="navigation">
+      <button class="nav-btn" id="prevBtn" onclick="prevPage()" disabled>Previous</button>
+      <span class="page-indicator" id="pageIndicator">1 / 7</span>
+      <button class="nav-btn" id="nextBtn" onclick="nextPage()">Next</button>
+    </div>
+
+    <script src="./js/book.js"></script>
+  </body>
+</html>
