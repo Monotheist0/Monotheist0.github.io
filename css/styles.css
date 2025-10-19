@@ -93,8 +93,8 @@ body {
   position: relative;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  z-index: 2; /* Add this */
-  pointer-events: none; /* Add this */
+  z-index: 2;
+  pointer-events: none;
   .page-content > * {
     pointer-events: auto;
   }
@@ -234,11 +234,10 @@ body {
 /* Projects Styling */
 .projects-container {
   max-height: 600px;
-  overflow-y: auto; /* Enable scrolling */
+  overflow-y: auto;
   overflow-x: hidden;
   padding-right: 1rem;
-  pointer-events: auto; /* Add this */
-  /* Ensure container takes up space */
+  pointer-events: auto;
   flex: 1;
   min-height: 0; /* Critical for flexbox scrolling */
 }

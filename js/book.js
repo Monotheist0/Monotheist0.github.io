@@ -6,29 +6,11 @@ let projectsLoaded = false;
 
 // Backup projects data
 const backupProjects = [
-  /* ... your backup projects ... */
   {
     name: "Islamic Text Dataset",
     description:
       "OCR'd 50+ Islamic books, tafsirs, and collected text versions of Quran and Hadith to feed AI models for Islamic studies and research.",
     language: "Python",
-    stargazers_count: 0,
-    forks_count: 0,
-    html_url: "#",
-  },
-  {
-    name: "Learning in Public",
-    description:
-      "Documenting my learning journey through technology, problem-solving, and building with purpose.",
-    language: "Markdown",
-    stargazers_count: 0,
-    forks_count: 0,
-    html_url: "#",
-  },
-  {
-    name: "RoyalSepia KDE Theme",
-    description: "Custom dark theme with warm sepia tones for KDE Plasma desktop environment.",
-    language: "CSS",
     stargazers_count: 0,
     forks_count: 0,
     html_url: "#",
@@ -259,7 +241,6 @@ function displayProjects(projects) {
 
 // Escape HTML to prevent XSS
 function escapeHtml(text) {
-  // ... (rest of your escapeHtml function is perfectly fine)
   const map = {
     "&": "&amp;",
     "<": "&lt;",
