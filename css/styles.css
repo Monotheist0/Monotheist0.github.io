@@ -27,6 +27,7 @@ body {
   overflow-x: hidden;
   line-height: 1.6;
   letter-spacing: 0.02em;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -129,6 +130,7 @@ body {
   padding-bottom: 2rem;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
+  scroll-behavior: smooth;
   overscroll-behavior: contain;
   will-change: scroll-position;
   transform: translate3d(0, 0, 0);

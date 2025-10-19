@@ -1,6 +1,7 @@
 // ============================================
 // Book Portfolio - Production-Ready JavaScript
 // Optimized for Performance & Accessibility
+// Fixes: Confined wheel scrolling to content; no window scroll
 // ============================================
 
 // Configuration Constants
@@ -31,7 +32,7 @@ const backupProjects = [
 ];
 
 // ============================================
-// Audio Functions
+// Audio Functions (Unchanged)
 // ============================================
 
 function initAudio() {
@@ -100,7 +101,7 @@ function toggleSound() {
 }
 
 // ============================================
-// Navigation Functions
+// Navigation Functions (Minor tweaks for wheel integration)
 // ============================================
 
 function nextPage() {
@@ -127,6 +128,7 @@ function nextPage() {
   setTimeout(() => {
     isAnimating = false;
     document.querySelector(".book")?.classList.remove("animating");
+    reattachWheelHandler(); // Re-attach to new current page
   }, 800);
 }
 
@@ -149,6 +151,7 @@ function prevPage() {
   setTimeout(() => {
     isAnimating = false;
     document.querySelector(".book")?.classList.remove("animating");
+    reattachWheelHandler(); // Re-attach to new current page
   }, 800);
 }
 
@@ -169,6 +172,7 @@ function jumpToPage(pageNum) {
 
   setTimeout(() => {
     isAnimating = false;
+    reattachWheelHandler(); // Re-attach
   }, 800);
 }
 
@@ -235,8 +239,58 @@ function updateDots() {
   });
 }
 
+let wheelRafId = null;
+let accumulatedDeltaY = 0;
+
+function setupPageWheelHandling() {
+  // Remove existing listener
+  document.removeEventListener("wheel", handleWheel, { passive: false });
+  document.addEventListener("wheel", handleWheel, { passive: false });
+
+  function handleWheel(e) {
+    if (isAnimating || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      e.preventDefault();
+      return;
+    }
+
+    // Accumulate for RAF throttle
+    accumulatedDeltaY += e.deltaY;
+    if (wheelRafId) return;
+    wheelRafId = requestAnimationFrame(() => {
+      processWheelDelta(accumulatedDeltaY);
+      accumulatedDeltaY = 0;
+      wheelRafId = null;
+    });
+
+    // Lock window scroll
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  function processWheelDelta(deltaY) {
+    const currentPageEl = document.querySelector(".page.current");
+    if (!currentPageEl) return;
+
+    // Find scrollable
+    const scrollable = currentPageEl.querySelector(
+      ".projects-container, .content, .skills-grid, .contact-card",
+    );
+    const hasOverflow = scrollable && scrollable.scrollHeight > scrollable.clientHeight;
+
+    if (hasOverflow) {
+      // Scroll content ONLY; no edge-flip
+      scrollable.scrollTop += deltaY;
+    }
+    // Else: Do nothing (no scrollable, no flip)
+  }
+}
+
+function reattachWheelHandler() {
+  setTimeout(setupPageWheelHandling, 100);
+}
+
 // ============================================
-// Projects Loading Functions
+// Projects Loading Functions (Unchanged)
 // ============================================
 
 async function loadProjects() {
@@ -401,7 +455,7 @@ function escapeHtml(text) {
 }
 
 // ============================================
-// Utility Functions
+// Utility Functions (Minor: Remove old setupWheelScrolling)
 // ============================================
 
 function sharePortfolio() {
@@ -470,27 +524,6 @@ function handleKeyPress(e) {
   }
 }
 
-function setupWheelScrolling() {
-  const scrollableAreas = document.querySelectorAll(".projects-container, .content, .skills-grid");
-
-  scrollableAreas.forEach((area) => {
-    area.addEventListener(
-      "wheel",
-      function (e) {
-        const hasScrollbar = this.scrollHeight > this.clientHeight;
-        const canScrollUp = e.deltaY < 0 && this.scrollTop > 0;
-        const canScrollDown =
-          e.deltaY > 0 && this.scrollTop < this.scrollHeight - this.clientHeight;
-
-        if (hasScrollbar && (canScrollUp || canScrollDown)) {
-          e.stopPropagation();
-        }
-      },
-      { passive: true },
-    );
-  });
-}
-
 function setupTouchNavigation() {
   // Only setup touch if supported
   if (!("ontouchstart" in window)) return;
@@ -541,7 +574,7 @@ function updateCopyright() {
 }
 
 // ============================================
-// Initialization
+// Initialization (Updated: New wheel handler, remove old)
 // ============================================
 
 function initBook() {
@@ -550,6 +583,9 @@ function initBook() {
   updateNavigation();
   updateProgressBar();
   updateDots();
+
+  // NEW: Setup wheel handling
+  setupPageWheelHandling();
 
   // Load sound preference
   const savedSound = localStorage.getItem("soundEnabled");
@@ -562,10 +598,7 @@ function initBook() {
 
   // Setup event listeners
   document.addEventListener("keydown", handleKeyPress);
-  setupWheelScrolling();
-  setupTouchNavigation();
-
-  setupWheelForwarding();
+  setupTouchNavigation(); // Touch unchanged
 
   // Lazy load projects
   loadProjects();
@@ -600,38 +633,7 @@ function initBook() {
     });
   }
 
-  function setupWheelForwarding() {
-    document.querySelectorAll(".click-area").forEach((area) => {
-      area.addEventListener(
-        "wheel",
-        function (e) {
-          // Stop propagation to avoid page-level interference
-          e.stopPropagation();
-
-          // Find the parent page and its content sibling
-          const page = this.parentElement;
-          const content = page.querySelector(".page-content");
-          if (!content) return;
-
-          // Find the main scrollable child (handles .content, .projects-container, etc.)
-          const scrollable = content.querySelector(
-            ".content, .projects-container, .skills-grid, .contact-card",
-          );
-          if (!scrollable || scrollable.scrollHeight <= scrollable.clientHeight) {
-            // No overflow needed, bail out
-            return;
-          }
-
-          // Forward the scroll delta (up/down)
-          scrollable.scrollTop += e.deltaY;
-
-          // Prevent browser default (essential for smooth control)
-          e.preventDefault();
-        },
-        { passive: false },
-      ); // Allows preventDefault to work
-    });
-  }
+  // Remove old setupWheelForwarding() & setupWheelScrolling() - superseded
 }
 
 // ============================================
