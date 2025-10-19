@@ -45,17 +45,20 @@ function initBook() {
   loadProjects();
   // Add keyboard navigation
   document.addEventListener("keydown", handleKeyPress);
-  const projectsContainer = document.getElementById("projectsContainer");
-  if (projectsContainer) {
-    projectsContainer.addEventListener("wheel", function (e) {
-      // Check if the container is actually scrollable
-      const hasScrollbar = this.scrollHeight > this.clientHeight;
-      if (hasScrollbar) {
-        // Stop the scroll event from bubbling up to the body
-        e.stopPropagation();
-      }
-    });
-  }
+  const scrollableAreas = document.querySelectorAll(".projects-container, .skills-grid, .content");
+
+  const handleWheelScroll = function (e) {
+    // Check if the container is actually scrollable
+    const hasScrollbar = this.scrollHeight > this.clientHeight;
+    if (hasScrollbar) {
+      // Stop the scroll event from bubbling up to the body
+      e.stopPropagation();
+    }
+  };
+
+  scrollableAreas.forEach((area) => {
+    area.addEventListener("wheel", handleWheelScroll);
+  });
 }
 
 function playFlipSound() {
