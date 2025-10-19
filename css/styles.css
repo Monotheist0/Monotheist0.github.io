@@ -16,7 +16,6 @@
 
 /* Global Styles */
 * {
-  overflow: hidden;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -97,9 +96,9 @@ body {
   -webkit-backface-visibility: hidden;
   z-index: 2;
   pointer-events: none;
-  .page-content > * {
-    pointer-events: auto;
-  }
+}
+.page-content > * {
+  pointer-events: auto;
 }
 
 .page-number {
@@ -529,4 +528,277 @@ body {
 
 .projects-container::-webkit-scrollbar-thumb:hover {
   background: var(--royal-gold);
+}
+
+/* Page Navigation Dots */
+.page-dots {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  z-index: 1000;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--royal-inactive);
+  border: 2px solid var(--royal-gold);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dot:hover {
+  transform: scale(1.3);
+  background: var(--royal-bronze);
+}
+
+.dot.active {
+  background: var(--royal-gold);
+  width: 16px;
+  height: 16px;
+  box-shadow: 0 0 10px var(--royal-gold);
+}
+
+.dot:focus-visible {
+  outline: 2px solid var(--royal-gold);
+  outline-offset: 4px;
+}
+
+/* Dot Tooltips */
+.dot::before {
+  content: attr(aria-label);
+  position: absolute;
+  right: 120%;
+  background: rgba(28, 28, 28, 0.95);
+  color: var(--royal-sepia);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border: 1px solid var(--royal-gold);
+}
+
+.dot:hover::before {
+  opacity: 1;
+}
+
+/* Sound Toggle Button */
+.sound-toggle {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(28, 28, 28, 0.9);
+  border: 2px solid var(--royal-bronze);
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sound-toggle:hover {
+  background: var(--royal-bronze);
+  transform: scale(1.1);
+  border-color: var(--royal-gold);
+}
+
+.sound-toggle:focus-visible {
+  outline: 2px solid var(--royal-gold);
+  outline-offset: 4px;
+}
+
+.sound-icon {
+  font-size: 1.5rem;
+}
+
+/* Keyboard Hint */
+.keyboard-hint {
+  position: fixed;
+  bottom: 7rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(28, 28, 28, 0.95);
+  color: var(--royal-sepia);
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  border: 1px solid var(--royal-gold);
+  font-size: 0.9rem;
+  z-index: 999;
+  animation: fadeInOut 5s ease-in-out forwards;
+  pointer-events: none;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+}
+
+/* Progress Bar */
+.progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(28, 28, 28, 0.5);
+  z-index: 1001;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--royal-bronze), var(--royal-gold));
+  transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: 14.28%; /* 1/7 for first page */
+  box-shadow: 0 0 10px var(--royal-gold);
+}
+
+/* Page Curl Effect on Hover */
+.page .click-area.right::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 60px 60px;
+  border-color: transparent transparent rgba(139, 115, 85, 0.3) transparent;
+  opacity: 0;
+  transition: opacity 0.3s ease, border-width 0.3s ease;
+  pointer-events: none;
+  filter: drop-shadow(-2px -2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.page .click-area.right:hover::after {
+  opacity: 1;
+  border-width: 0 0 80px 80px;
+}
+
+.page .click-area.left::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 60px 60px 0;
+  border-color: transparent rgba(139, 115, 85, 0.3) transparent transparent;
+  opacity: 0;
+  transition: opacity 0.3s ease, border-width 0.3s ease;
+  pointer-events: none;
+  filter: drop-shadow(2px -2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.page .click-area.left:hover::after {
+  opacity: 1;
+  border-width: 0 80px 80px 0;
+}
+
+/* Share Button */
+.share-button {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(28, 28, 28, 0.9);
+  border: 2px solid var(--royal-bronze);
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.share-button:hover {
+  background: var(--royal-bronze);
+  transform: scale(1.1);
+  border-color: var(--royal-gold);
+}
+
+.share-button:focus-visible {
+  outline: 2px solid var(--royal-gold);
+  outline-offset: 4px;
+}
+
+/* Accessibility: Focus States */
+.nav-btn:focus-visible,
+.click-area:focus-visible {
+  outline: 2px solid var(--royal-gold);
+  outline-offset: 4px;
+}
+
+/* Mobile: Swipe Indicators */
+@media (max-width: 768px) {
+  .page::before,
+  .page::after {
+    content: "‹";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: rgba(230, 192, 123, 0.2);
+    pointer-events: none;
+    animation: swipeHint 2s ease-in-out infinite;
+  }
+
+  .page::before {
+    left: 1rem;
+  }
+
+  .page::after {
+    content: "›";
+    right: 1rem;
+  }
+
+  @keyframes swipeHint {
+    0%,
+    100% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  .page-dots {
+    right: 1rem;
+  }
+
+  .sound-toggle {
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+  }
 }

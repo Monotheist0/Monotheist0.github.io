@@ -3,6 +3,8 @@ let currentPage = 1;
 const totalPages = 7;
 let isAnimating = false;
 let projectsLoaded = false;
+let soundEnabled = false;
+let audioContext = null;
 
 // Backup projects data
 const backupProjects = [
@@ -17,13 +19,28 @@ const backupProjects = [
   },
 ];
 
+function initAudio() {
+  try {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  } catch (e) {
+    console.log("Web Audio API not supported");
+  }
+}
+
 // Initialize the book
 function initBook() {
   // Call updatePageStates immediately, with 'true' to set state instantly
   updatePageStates(true);
   updateNavigation();
-  loadProjects();
+  updateProgressBar();
+  updateDots();
 
+  const savedSound = localStorage.getItem("soundEnabled");
+  if (savedSound === "true") {
+    soundEnabled = true;
+    document.querySelector(".sound-icon").textContent = "🔊";
+  }
+  loadProjects();
   // Add keyboard navigation
   document.addEventListener("keydown", handleKeyPress);
   const projectsContainer = document.getElementById("projectsContainer");
@@ -37,27 +54,85 @@ function initBook() {
       }
     });
   }
+}
 
-  // Add touch support for mobile
-  let touchStartX = 0;
-  let touchEndX = 0;
+function playFlipSound() {
+  if (!soundEnabled || !audioContext) return;
 
-  document.addEventListener("touchstart", function (e) {
-    touchStartX = e.changedTouches[0].screenX;
-  });
+  // --- Create White Noise ---
+  const duration = 0.3; // Sound duration in seconds
+  const sampleRate = audioContext.sampleRate;
+  const bufferSize = sampleRate * duration;
+  const buffer = audioContext.createBuffer(1, bufferSize, sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = Math.random() * 2 - 1; // Generate random noise
+  }
 
-  document.addEventListener("touchend", function (e) {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-  });
+  // --- Create Source Node ---
+  const noiseSource = audioContext.createBufferSource();
+  noiseSource.buffer = buffer;
 
-  function handleSwipe() {
-    if (Math.abs(touchEndX - touchStartX) > 50) {
-      if (touchEndX < touchStartX) {
-        nextPage();
-      } else {
-        prevPage();
-      }
+  // --- Create Filter (The "Whoosh" part) ---
+  const filter = audioContext.createBiquadFilter();
+  filter.type = "bandpass";
+  filter.frequency.setValueAtTime(1000, audioContext.currentTime);
+  filter.Q.setValueAtTime(0.5, audioContext.currentTime);
+
+  // --- Create Volume Control (The Fade) ---
+  const gainNode = audioContext.createGain();
+  gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+
+  // <-- THIS IS THE CHANGE: 0.1 is now 0.05 -->
+  gainNode.gain.linearRampToValueAtTime(0.05, audioContext.currentTime + 0.05); // Swell up (but quieter)
+
+  gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration); // Fade out
+
+  // --- Connect everything together ---
+  noiseSource.connect(filter);
+  filter.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+
+  // --- Play ---
+  noiseSource.start(audioContext.currentTime);
+  noiseSource.stop(audioContext.currentTime + duration);
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  const icon = document.querySelector(".sound-icon");
+  icon.textContent = soundEnabled ? "🔊" : "🔇";
+  localStorage.setItem("soundEnabled", soundEnabled);
+
+  if (soundEnabled) {
+    if (!audioContext) {
+      // Create audio context for the first time
+      initAudio();
+    } else if (audioContext.state === "suspended") {
+      // Resume it if it was created but suspended by the browser
+      audioContext.resume();
+    }
+  }
+}
+// Add touch support for mobile
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener("touchstart", function (e) {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener("touchend", function (e) {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  if (Math.abs(touchEndX - touchStartX) > 50) {
+    if (touchEndX < touchStartX) {
+      nextPage();
+    } else {
+      prevPage();
     }
   }
 }
@@ -71,20 +146,76 @@ function handleKeyPress(e) {
   }
 }
 
+function sharePortfolio() {
+  const url = window.location.href;
+  const text = "Check out my portfolio - The Chronicles of Masud!";
+
+  if (navigator.share) {
+    navigator.share({
+      title: "The Chronicles of Masud",
+      text: text,
+      url: url,
+    });
+  } else {
+    // Fallback: copy to clipboard
+    navigator.clipboard.writeText(url).then(() => {
+      alert("Link copied to clipboard!");
+    });
+  }
+}
+
+function updateDots() {
+  document.querySelectorAll(".dot").forEach((dot, index) => {
+    if (index + 1 === currentPage) {
+      dot.classList.add("active");
+    } else {
+      dot.classList.remove("active");
+    }
+  });
+}
+
+function updateProgressBar() {
+  const progressFill = document.getElementById("progressFill");
+  const progress = (currentPage / totalPages) * 100;
+  progressFill.style.width = `${progress}%`;
+}
+
+function jumpToPage(pageNum) {
+  if (isAnimating || pageNum === currentPage || pageNum < 1 || pageNum > totalPages) return;
+
+  isAnimating = true;
+  currentPage = pageNum;
+
+  updatePageStates();
+  updateNavigation();
+  updateProgressBar();
+  updateDots();
+  playFlipSound();
+
+  setTimeout(() => {
+    isAnimating = false;
+  }, 800);
+}
+
 // Navigate to next page
 function nextPage() {
   if (isAnimating || currentPage >= totalPages) return;
 
   isAnimating = true;
   document.querySelector(".book").classList.add("animating");
-
+  playFlipSound();
   // 1. Increment the page number FIRST
   currentPage++;
 
   // 2. Call updatePageStates to trigger the animation
   updatePageStates();
   updateNavigation();
+  updateProgressBar();
+  updateDots();
 
+  if (currentPage === 3 && !projectsLoaded) {
+    loadProjects();
+  }
   // 3. Set timeout ONLY to reset the animation flag
   setTimeout(() => {
     isAnimating = false;
@@ -98,13 +229,15 @@ function prevPage() {
 
   isAnimating = true;
   document.querySelector(".book").classList.add("animating");
-
+  playFlipSound();
   // 1. Decrement the page number FIRST
   currentPage--;
 
   // 2. Call updatePageStates to trigger the animation
   updatePageStates();
   updateNavigation();
+  updateProgressBar();
+  updateDots();
 
   // 3. Set timeout ONLY to reset the animation flag
   setTimeout(() => {
@@ -265,4 +398,12 @@ function escapeHtml(text) {
 }
 
 // Initialize when DOM is loaded
-document.addEventListener("DOMContentLoaded", initBook);
+document.addEventListener("DOMContentLoaded", function () {
+  initBook(); // Run the main init function
+
+  // Attach the sound toggle listener
+  const soundToggle = document.getElementById("soundToggle");
+  if (soundToggle) {
+    soundToggle.addEventListener("click", toggleSound);
+  }
+});

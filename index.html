@@ -344,6 +344,58 @@
       <button class="nav-btn" id="nextBtn" onclick="nextPage()">Next</button>
     </div>
 
+    <!-- Page Navigation Dots (Quick Jump) -->
+    <div class="page-dots">
+      <button class="dot" data-page="1" aria-label="Go to Cover" onclick="jumpToPage(1)"></button>
+      <button class="dot" data-page="2" aria-label="Go to About" onclick="jumpToPage(2)"></button>
+      <button class="dot" data-page="3" aria-label="Go to Skills" onclick="jumpToPage(3)"></button>
+      <button
+        class="dot"
+        data-page="4"
+        aria-label="Go to Projects"
+        onclick="jumpToPage(4)"
+      ></button>
+      <button
+        class="dot"
+        data-page="5"
+        aria-label="Go to Experience"
+        onclick="jumpToPage(5)"
+      ></button>
+      <button class="dot" data-page="6" aria-label="Go to Contact" onclick="jumpToPage(6)"></button>
+      <button
+        class="dot"
+        data-page="7"
+        aria-label="Go to Back Cover"
+        onclick="jumpToPage(7)"
+      ></button>
+    </div>
+
+    <!-- Sound Toggle Button -->
+    <button
+      class="sound-toggle"
+      id="soundToggle"
+      aria-label="Toggle sound effects"
+      title="Toggle page flip sound"
+    >
+      <span class="sound-icon">🔇</span>
+    </button>
+
+    <!-- Keyboard Hint (fades after 3 seconds) -->
+    <div class="keyboard-hint" id="keyboardHint">⌨️ Use arrow keys to navigate</div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <!-- Share Button -->
+    <button
+      class="share-button"
+      onclick="sharePortfolio()"
+      aria-label="Share portfolio"
+      title="Share this portfolio"
+    >
+      🔗
+    </button>
     <script src="./js/book.js"></script>
   </body>
 </html>
