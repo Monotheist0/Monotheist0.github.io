@@ -42,8 +42,8 @@ body {
 
 .book {
   position: relative;
-  width: 700px;
-  height: 900px;
+  width: min(90vw, 700px);
+  height: calc(min(90vw, 700px) * 1.3);
   transform-style: preserve-3d;
   transition: transform 0.3s ease;
 }
@@ -60,7 +60,7 @@ body {
 
   background: linear-gradient(135deg, var(--royal-surface), #1a1a1a);
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1), inset -1px 0 5px rgba(139, 115, 85, 0.1);
-
+  transform: translateZ(0);
   transform-origin: left center;
   transform-style: preserve-3d;
 
@@ -203,6 +203,9 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   margin-top: 1.5rem;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
 }
 
 .skill-category {
@@ -485,7 +488,11 @@ body {
   .book-container {
     padding: 1rem;
   }
-
+  .click-area {
+    width: 15%; /* Only take up 15% of the width on mobile */
+    top: 20%;
+    height: 60%;
+  }
   .page-number {
     display: none;
   }

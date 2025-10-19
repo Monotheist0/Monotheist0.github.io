@@ -104,6 +104,27 @@ function toggleSound() {
   }
 }
 
+const scrollableAreas = document.querySelectorAll(".projects-container, .content, .contact-card");
+
+const handleWheelScroll = function (e) {
+  // Check if the container is actually scrollable
+  const hasScrollbar = this.scrollHeight > this.clientHeight;
+
+  // Check if we can scroll up or down
+  const canScrollUp = e.deltaY < 0 && this.scrollTop > 0;
+  const canScrollDown = e.deltaY > 0 && this.scrollTop < this.scrollHeight - this.clientHeight;
+
+  if (hasScrollbar && (canScrollUp || canScrollDown)) {
+    // If we can scroll, stop the event from bubbling
+    // up to the main page (which would do nothing).
+    e.stopPropagation();
+  }
+};
+
+scrollableAreas.forEach((area) => {
+  area.addEventListener("wheel", handleWheelScroll);
+});
+
 // Handle keyboard navigation
 function handleKeyPress(e) {
   if (e.key === "ArrowRight") {
