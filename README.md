@@ -14,8 +14,6 @@ An interactive book-style portfolio built with HTML, Tailwind CSS, and vanilla J
 
 [https://Monotheist0.github.io](https://Monotheist0.github.io)
 
-## Local Development
-
 ## Clone the repository
 
 `` git clone https://github.com/Monotheist0/Monotheist0.github.io.git `` 
