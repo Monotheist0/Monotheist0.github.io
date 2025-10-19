@@ -1,0 +1,10 @@
+:root {
+    --royal-background: rgb(13, 13, 13);
+    --royal-surface: rgb(28, 28, 28);
+    --royal-gold: rgb(230, 192, 123);
+    --royal-sepia: rgb(185, 152, 111);
+    --royal-bronze: rgb(213, 128, 94);
+    --royal-teal: rgb(72, 217, 198);
+    --royal-inactive: rgb(168, 147, 123);
+    --royal-link: rgb(122, 92, 74);
+}
