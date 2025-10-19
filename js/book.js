@@ -134,6 +134,42 @@ function handleKeyPress(e) {
   }
 }
 
+// Simpler touch handling that doesn't interfere with scrolling
+let touchStartX = 0;
+let touchStartY = 0;
+
+document.addEventListener(
+  "touchstart",
+  function (e) {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  },
+  { passive: true },
+);
+
+document.addEventListener(
+  "touchend",
+  function (e) {
+    const touchEndX = e.changedTouches[0].screenX;
+    const touchEndY = e.changedTouches[0].screenY;
+
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+
+    // Only trigger page flip if:
+    // 1. Horizontal movement > 70px
+    // 2. Horizontal movement is 3x larger than vertical
+    if (Math.abs(deltaX) > 70 && Math.abs(deltaX) > Math.abs(deltaY) * 3) {
+      if (deltaX > 0) {
+        prevPage();
+      } else {
+        nextPage();
+      }
+    }
+  },
+  { passive: true },
+);
+
 function sharePortfolio() {
   const url = window.location.href;
   const text = "Check out my portfolio - The Chronicles of Masud!";
