@@ -100,6 +100,12 @@ body {
 .page-content > * {
   pointer-events: auto;
 }
+.content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: 2rem;
+}
 
 .page-number {
   position: absolute;
@@ -467,6 +473,10 @@ body {
     padding: 1rem;
   }
 
+  .page-number {
+    display: none;
+  }
+
   .book {
     width: 100%;
     max-width: 500px;
@@ -488,11 +498,19 @@ body {
   .skills-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
+
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    padding-bottom: 2rem;
   }
 
   .navigation {
-    padding: 0.8rem 1.5rem;
-    gap: 0.8rem;
+    display: none;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+    bottom: 1rem;
   }
 
   .nav-btn {
@@ -511,22 +529,30 @@ body {
   pointer-events: none;
 }
 
-/* Scroll Styling for Projects */
-.projects-container::-webkit-scrollbar {
+/* Scroll Styling for All Pages */
+.projects-container::-webkit-scrollbar,
+.skills-grid::-webkit-scrollbar,
+.content::-webkit-scrollbar {
   width: 6px;
 }
 
-.projects-container::-webkit-scrollbar-track {
+.projects-container::-webkit-scrollbar-track,
+.skills-grid::-webkit-scrollbar-track,
+.content::-webkit-scrollbar-track {
   background: rgba(230, 192, 123, 0.1);
   border-radius: 3px;
 }
 
-.projects-container::-webkit-scrollbar-thumb {
+.projects-container::-webkit-scrollbar-thumb,
+.skills-grid::-webkit-scrollbar-thumb,
+.content::-webkit-scrollbar-thumb {
   background: var(--royal-bronze);
   border-radius: 3px;
 }
 
-.projects-container::-webkit-scrollbar-thumb:hover {
+.projects-container::-webkit-scrollbar-thumb:hover,
+.skills-grid::-webkit-scrollbar-thumb:hover,
+.content::-webkit-scrollbar-thumb:hover {
   background: var(--royal-gold);
 }
 

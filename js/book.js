@@ -5,6 +5,8 @@ let isAnimating = false;
 let projectsLoaded = false;
 let soundEnabled = false;
 let audioContext = null;
+let touchStartY = 0;
+let touchEndY = 0;
 
 // Backup projects data
 const backupProjects = [
@@ -118,23 +120,39 @@ function toggleSound() {
 let touchStartX = 0;
 let touchEndX = 0;
 
-document.addEventListener("touchstart", function (e) {
-  touchStartX = e.changedTouches[0].screenX;
-});
+document.addEventListener(
+  "touchstart",
+  function (e) {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  },
+  { passive: true },
+);
 
-document.addEventListener("touchend", function (e) {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-});
+document.addEventListener(
+  "touchend",
+  function (e) {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipe();
+  },
+  { passive: true },
+);
 
 function handleSwipe() {
-  if (Math.abs(touchEndX - touchStartX) > 50) {
+  const deltaX = Math.abs(touchEndX - touchStartX);
+  const deltaY = Math.abs(touchEndY - touchStartY);
+  const minSwipeDistance = 50; // Minimum pixels for a "swipe"
+
+  if (deltaX > deltaY && deltaX > minSwipeDistance) {
     if (touchEndX < touchStartX) {
-      nextPage();
+      nextPage(); // Swiped left
     } else {
-      prevPage();
+      prevPage(); // Swiped right
     }
   }
+  // If deltaY > deltaX, the user was scrolling vertically,
+  // so we do nothing.
 }
 
 // Handle keyboard navigation
