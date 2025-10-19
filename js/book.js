@@ -565,6 +565,8 @@ function initBook() {
   setupWheelScrolling();
   setupTouchNavigation();
 
+  setupWheelForwarding();
+
   // Lazy load projects
   loadProjects();
 
@@ -595,6 +597,39 @@ function initBook() {
       } else if (clickArea.classList.contains("right")) {
         nextPage();
       }
+    });
+  }
+
+  function setupWheelForwarding() {
+    document.querySelectorAll(".click-area").forEach((area) => {
+      area.addEventListener(
+        "wheel",
+        function (e) {
+          // Stop propagation to avoid page-level interference
+          e.stopPropagation();
+
+          // Find the parent page and its content sibling
+          const page = this.parentElement;
+          const content = page.querySelector(".page-content");
+          if (!content) return;
+
+          // Find the main scrollable child (handles .content, .projects-container, etc.)
+          const scrollable = content.querySelector(
+            ".content, .projects-container, .skills-grid, .contact-card",
+          );
+          if (!scrollable || scrollable.scrollHeight <= scrollable.clientHeight) {
+            // No overflow needed, bail out
+            return;
+          }
+
+          // Forward the scroll delta (up/down)
+          scrollable.scrollTop += e.deltaY;
+
+          // Prevent browser default (essential for smooth control)
+          e.preventDefault();
+        },
+        { passive: false },
+      ); // Allows preventDefault to work
     });
   }
 }
